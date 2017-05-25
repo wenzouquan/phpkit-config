@@ -1,0 +1,24 @@
+{
+    "name": "phpkit/config",
+    "description": "生成配置文件,主要用于简单的永久的配置",
+    "type": "project",
+    "keywords": [
+        "pay"
+    ],
+    "homepage": "http://www.phpkit.me/",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "wen",
+            "email": "359945126@qq.com"
+        }
+    ],
+    "config": {
+        "preferred-install": "dist"
+    },
+     "autoload": {
+        "psr-4": {
+            "phpkit\\config\\": "src/"
+        }
+    }
+}
