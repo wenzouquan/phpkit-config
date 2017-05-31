@@ -1,0 +1,9 @@
+<h1><?php echo $title?></h1>
+<form method="post">
+<input type="hidden" name="phpkitAct" value="setcache">
+<input type="hidden" name="cacheName" value="<?php echo $cacheName?>">
+<textarea name="cacheData" style="width:600px; height:300px" placeholder="可以为php数组如：array() ,字符串等"><?php echo $placeholder?></textarea>
+<p>
+<input style="width:200px; height:50px" type="submit"  value="保存">
+</p>
+</form>
