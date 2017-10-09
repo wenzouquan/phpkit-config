@@ -47,8 +47,20 @@ class Config {
 				exit();
 			}
 		}
-		$value = require_once $this->params['configDir'] . $name . ".php";
-		return $value;
+		if($GLOBALS['configData'][$name]){
+			return $GLOBALS['configData'][$name];
+		}
+		if($this->exists($name)){
+			$value = require $this->params['configDir'] . $name . ".php";
+			//var_dump($this->params['configDir'] . $name . ".php");
+			$dir = $this->params['configDir'] . $name . ".php";
+			$GLOBALS['configData'][$name]=$value;
+			//var_dump(require_once($dir));
+			return $value;
+		}else{
+			return false;
+		}
+		
 	}
 
 	function save($name, $value) {
