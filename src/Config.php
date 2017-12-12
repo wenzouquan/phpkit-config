@@ -6,6 +6,7 @@ class Config {
 	function __construct($param = array()) {
 
 		$param['configDir'] = $param['configDir'] ? $param['configDir'] : dirname(__FILE__) . '/data/';
+		$param['configDir'] = rtrim($param['configDir'],"/")."/";
 		if (!$param['configDir']) {
 			\phpkit\helper\mk_dir($cacheDir);
 		}
