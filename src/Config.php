@@ -3,10 +3,14 @@ namespace phpkit\config;
 use Phalcon\Mvc\View\Simple as SimpleView;
 
 class Config {
+    
+
+
 	function __construct($param = array()) {
 
 		$param['configDir'] = $param['configDir'] ? $param['configDir'] : dirname(__FILE__) . '/data/';
 		$param['configDir'] = rtrim($param['configDir'],"/")."/";
+		$this->prefix=$param['prefix']?$param['prefix']:'';
 		if (!$param['configDir']) {
 			\phpkit\helper\mk_dir($cacheDir);
 		}
@@ -27,6 +31,7 @@ class Config {
 	}
 
 	function get($name, $test = '') {
+		 $name = $this->prefix.$name;
 		//强制填写字典
 		if ($test == 'setIfNull' && !$this->exists($name)) {
 			if ($_POST) {
@@ -65,6 +70,7 @@ class Config {
 	}
 
 	function save($name, $value) {
+		$name = $this->prefix.$name;
 		$str_tmp = "<?php\r\n"; //得到php的起始符。$str_tmp将累加
 		$str_tmp .= "return ";
 		if (is_array($value)) {
@@ -86,10 +92,12 @@ class Config {
 	}
 
 	function exists($name) {
+		$name = $this->prefix.$name;
 		return is_file($this->params['configDir'] . $name . ".php");
 	}
 
 	function delete($name) {
+		$name = $this->prefix.$name;
 		return unlink($this->params['configDir'] . $name . ".php");
 	}
 }
