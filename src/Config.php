@@ -10,7 +10,6 @@ class Config {
 
 		$param['configDir'] = $param['configDir'] ? $param['configDir'] : dirname(__FILE__) . '/data/';
 		$param['configDir'] = rtrim($param['configDir'],"/")."/";
-		$this->prefix=$param['prefix']?$param['prefix']:'';
 		if (!$param['configDir']) {
 			\phpkit\helper\mk_dir($cacheDir);
 		}
@@ -31,7 +30,6 @@ class Config {
 	}
 
 	function get($name, $test = '') {
-		 $name = $this->prefix.$name;
 		//强制填写字典
 		if ($test == 'setIfNull' && !$this->exists($name)) {
 			if ($_POST) {
@@ -53,14 +51,15 @@ class Config {
 				exit();
 			}
 		}
-		if($GLOBALS['configData'][$name]){
-			return $GLOBALS['configData'][$name];
+		$cacheName=$this->params['configDir'].$name . ".php";
+		if($GLOBALS['configData'][$cacheName]){
+			return $GLOBALS['configData'][$cacheName];
 		}
 		if($this->exists($name)){
 			$value = require $this->params['configDir'] . $name . ".php";
 			//var_dump($this->params['configDir'] . $name . ".php");
 			$dir = $this->params['configDir'] . $name . ".php";
-			$GLOBALS['configData'][$name]=$value;
+			$GLOBALS['configData'][$cacheName]=$value;
 			//var_dump(require_once($dir));
 			return $value;
 		}else{
@@ -70,7 +69,6 @@ class Config {
 	}
 
 	function save($name, $value) {
-		$name = $this->prefix.$name;
 		$str_tmp = "<?php\r\n"; //得到php的起始符。$str_tmp将累加
 		$str_tmp .= "return ";
 		if (is_array($value)) {
@@ -92,12 +90,12 @@ class Config {
 	}
 
 	function exists($name) {
-		$name = $this->prefix.$name;
 		return is_file($this->params['configDir'] . $name . ".php");
 	}
 
 	function delete($name) {
-		$name = $this->prefix.$name;
+		$cacheName=$this->params['configDir'].$name . ".php";
+		$GLOBALS['configData'][$cacheName]=null;
 		return unlink($this->params['configDir'] . $name . ".php");
 	}
 }
